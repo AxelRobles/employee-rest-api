@@ -1,8 +1,12 @@
 package com.axelrj.kenzan.employeerestapi;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.axelrj.kenzan.employeerestapi.employee.Employee;
@@ -17,27 +21,26 @@ public class EmployeeController {
 	//GET all employees
 	//URI - /employees
 	@GetMapping(path = "/employees")
-	public String getAllEmployees() {
-		return "hello employees";
+	public List<Employee> getAllEmployees() {
+		return service.getAllEmployee();
 	}
 	
-	// GET employees beans
-	// URI /employeesBean
-	@GetMapping(path = "/employeesBean")
-	public Employee[] getAllEmployeesBean() {
-		return new Employee[] {new Employee("1", "axel", "robles", "01/01/01", "01/01/01","inactive"), 
-				new Employee("2", "josefina", "arias", "01/01/01", "01/01/01","active")};
-		
-		}
 	
 	// Get one employee by id
 	// URI /employee/{id}
 	@GetMapping(path =  "/employee/{id}")
 	public Employee getEmployee(@PathVariable String id  ) {
-		return new Employee("3", "leslie", "robles", "15/15/15", "15/15/15", "active");
+		return service.getEmployeeById(id);
 	}
 	
 	// create new employee
+	// URI /saveEmployee
+	@PostMapping(path = "/saveEmployee")
+	public String saveEmployee(@RequestBody Employee emp) {
+		service.saveNewEmployee(emp);
+		return "/employee/"+emp.getId();
+	}
+	
 	// Delete One employee
 	// update one employee
 	

@@ -9,17 +9,22 @@ import org.springframework.stereotype.Component;
 public class EmployeeDaoService {
 	
 	private static List<Employee> employeeList = new ArrayList<>();
-	
+	private static int idCount=0;
 	
 	//aqu es donde voy a leer los datos externos iniciales
 	static {
-		employeeList.add(new Employee("1","Axel","Robles","01-01-01","01-01-01","Active"));
-		employeeList.add(new Employee("2","Esmeralda","Sanchez","01-01-01","01-01-01","Active"));
-		employeeList.add(new Employee("3","Javier","Robles","01-01-01","01-01-01","Active"));
+		employeeList.add(new Employee(idCount++,"Axel","Robles","01-01-01","01-01-01","Active"));
+		employeeList.add(new Employee(idCount++,"Esmeralda","Sanchez","01-01-01","01-01-01","Active"));
+		employeeList.add(new Employee(idCount++,"Javier","Robles","01-01-01","01-01-01","Active"));
 		
 	}
 	
-	// create new employee
+	// Save new employee
+	public int saveNewEmployee(Employee emp) {
+		emp.setId(idCount++);
+		employeeList.add(emp);
+		return emp.getId();
+	} 
 	
 	// Get one employee by id
 	public Employee getEmployeeById(String id) {

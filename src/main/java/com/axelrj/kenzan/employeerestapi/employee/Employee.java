@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Employee {
-	String id;
+	int id;
 	String middleInitial;
 	String lastName;
 	String dateOfBirth;
@@ -24,7 +24,7 @@ public class Employee {
 		
 	}
 	
-	public Employee(String id, String middleInitial, String lastName, String dateOfBirth, String dateOfEmployment,
+	public Employee(int id, String middleInitial, String lastName, String dateOfBirth, String dateOfEmployment,
 			String status) {
 		super();
 		this.id = id;
@@ -34,10 +34,10 @@ public class Employee {
 		this.dateOfEmployment = dateOfEmployment;
 		this.status = status;
 	}
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getMiddleInitial() {
