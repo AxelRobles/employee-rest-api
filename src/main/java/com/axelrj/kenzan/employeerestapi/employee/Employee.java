@@ -1,40 +1,88 @@
 package com.axelrj.kenzan.employeerestapi.employee;
 
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@Entity
 @Component
 public class Employee {
-	int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	long id;
+	@Size(min=2, message = "Name should have at least two characters")
+	String firstName;
+	@Size(min=2, message = "Name should have at least two characters")
 	String middleInitial;
+	@Size(min=2,message = "Name should have at least two characters")
 	String lastName;
-	String dateOfBirth;
-	String dateOfEmployment;
+	@Past(message = "")
+	@JsonFormat(pattern="dd/MM/yyyy")
+	Date dateOfBirth;
+	@Past(message = "")
+	@JsonFormat(pattern="dd/MM/yyyy")
+	Date dateOfEmployment;
 	String status;
 	
 	
 	
 	
-	@Override
-	public String toString() {
-		return "Employee [id=" + id + ", middleInitial=" + middleInitial + ", lastName=" + lastName + ", dateOfBirth="
-				+ dateOfBirth + ", dateOfEmployment=" + dateOfEmployment + ", status=" + status + "]";
-	}
 	
 	public Employee() {
 		
 	}
 	
-	public Employee(int id, String middleInitial, String lastName, String dateOfBirth, String dateOfEmployment,
-			String status) {
+	
+	public Employee(long id, @Size(min = 2, message = "Name should have at least two characters") String firstName,
+			@Size(min = 2, message = "Name should have at least two characters") String middleInitial,
+			@Size(min = 2, message = "Name should have at least two characters") String lastName,
+			@Past(message = "") Date dateOfBirth, @Past(message = "") Date dateOfEmployment, String status) {
 		super();
 		this.id = id;
+		this.firstName = firstName;
 		this.middleInitial = middleInitial;
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;
 		this.dateOfEmployment = dateOfEmployment;
 		this.status = status;
 	}
-	public int getId() {
+
+	
+
+	@Override
+	public String toString() {
+		return "Employee [id=" + id + ", firstName=" + firstName + ", middleInitial=" + middleInitial + ", lastName="
+				+ lastName + ", dateOfBirth=" + dateOfBirth + ", dateOfEmployment=" + dateOfEmployment + ", status="
+				+ status + "]";
+	}
+
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+
+	public long getId() {
 		return id;
 	}
 	public void setId(int id) {
@@ -52,16 +100,16 @@ public class Employee {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public String getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
-	public void setDateOfBirth(String dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-	public String getDateOfEmployment() {
+	public Date getDateOfEmployment() {
 		return dateOfEmployment;
 	}
-	public void setDateOfEmployment(String dateOfEmployment) {
+	public void setDateOfEmployment(Date dateOfEmployment) {
 		this.dateOfEmployment = dateOfEmployment;
 	}
 	public String getStatus() {

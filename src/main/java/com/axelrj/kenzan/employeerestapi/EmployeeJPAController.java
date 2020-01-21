@@ -3,10 +3,12 @@ package com.axelrj.kenzan.employeerestapi;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,53 +20,56 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.axelrj.kenzan.employeerestapi.employee.Employee;
 import com.axelrj.kenzan.employeerestapi.employee.EmployeeDaoService;
+import com.axelrj.kenzan.employeerestapi.entities.EmployeeRepository;
 import com.axelrj.kenzan.employeerestapi.exceptions.EmployeeNotFoundException;
 
-@RestController
-public class EmployeeController {
 
+@RestController
+public class EmployeeJPAController {
+	
 	@Autowired
 	private EmployeeDaoService service;
 	
+	@Autowired
+	private EmployeeRepository empRepository;
+	
+	
 	//GET all employees
 	//URI - /employees
-	@GetMapping(path = "/employees")
+	@GetMapping(path = "/jpa/employees")
 	public List<Employee> getAllEmployees() {
-		return service.getAllEmployee();
+		return empRepository.findAll();
 	}
 	
 	
+	//GET id of employee of specific name 
+	
 	// Get one employee by id
 	// URI /employee/{id}
-	@GetMapping(path =  "/employee/{id}")
-	public Employee getEmployee(@PathVariable String id  ) {
-		Employee emp = service.getEmployeeById(Integer.valueOf(id));
-		if(emp == null) {
+	@GetMapping(path =  "/jpa/employee/{id}")
+	public EntityModel<Employee> getEmployee(@PathVariable long id  ) {
+		Optional<Employee> emp = empRepository.findById(id);
+		if(!emp.isPresent())
 			throw new EmployeeNotFoundException("id-" + id);
-		}
-		return emp; 
+		EntityModel<Employee> entityModel = new EntityModel<Employee>(emp.get());
+		return entityModel; 
 	}
 	
 	// create new employee
 	// URI /saveEmployee
-	@PostMapping(path = "/saveEmployee")
+	@PostMapping(path = "/jpa/saveEmployee")
 	public ResponseEntity<Object> saveEmployee(@Valid @RequestBody Employee emp) throws URISyntaxException {
-		service.saveNewEmployee(emp);
+		empRepository.save(emp);
 		ServletUriComponentsBuilder.fromCurrentRequest();
-		
-		
 		return ResponseEntity.created(new URI("/employee/"+emp.getId())).build();
 	}
 	 
 	// update one employee
 	
 	// delete one employee
-	@DeleteMapping(path= "/deleteEmployee/{id}")
-	public void deleteEmployeeById(@PathVariable int id) {
-		Employee emp = service.deleteEmployeeById(id);
-		if(emp == null)
-			throw new EmployeeNotFoundException("id-" + id);
+	@DeleteMapping(path= "/jpa/deleteEmployee/{id}")
+	public void deleteEmployeeById(@PathVariable long id) {
+		empRepository.deleteById(id);
 	}
-	
-	
+
 }
