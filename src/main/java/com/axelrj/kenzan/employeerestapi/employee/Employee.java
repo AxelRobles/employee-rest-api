@@ -10,13 +10,18 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Component
+@DynamicUpdate(value=true)
+@SelectBeforeUpdate
 public class Employee {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	long id;
@@ -26,17 +31,14 @@ public class Employee {
 	String middleInitial;
 	@Size(min=2,message = "Name should have at least two characters")
 	String lastName;
-	@Past(message = "")
+	
 	@JsonFormat(pattern="dd/MM/yyyy")
 	Date dateOfBirth;
 	@Past(message = "")
 	@JsonFormat(pattern="dd/MM/yyyy")
 	Date dateOfEmployment;
 	String status;
-	
-	
-	
-	
+
 	
 	public Employee() {
 		
@@ -84,9 +86,6 @@ public class Employee {
 
 	public long getId() {
 		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
 	}
 	public String getMiddleInitial() {
 		return middleInitial;
