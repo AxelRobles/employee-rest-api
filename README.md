@@ -11,10 +11,14 @@ docker run -p 8080:8080 employee-rest-api
 
 Also if you want you can open the project in one IDE and run it from there.
 
-in order to test the api, you have to do requests through localhost in port 8080 adding the specific url.
+In order to test the api, you have to do requests through localhost in port 8080 adding the specific url.
+
 http://localhost:8080/
-is preferred to test the api with a tool like postman.
-by default, the project already adds some employees to testing, so from the begginig you can perform request like get all employees.
+
+Is preferred to test the api with a tool like postman.
+
+By default, the project already adds some employees to testing, so from the begginig you can perform request like get all employees.
+
 I added some extras functionalities that I will mark with *ADDED note.
 
 # Get all employees
