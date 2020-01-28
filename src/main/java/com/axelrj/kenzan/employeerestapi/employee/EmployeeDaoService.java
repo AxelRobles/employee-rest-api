@@ -18,113 +18,106 @@ import com.axelrj.kenzan.employeerestapi.entities.EmployeeRepository;
 
 @Component
 public class EmployeeDaoService {
-	
+
 	private static List<Employee> employeeList = new ArrayList<>();
-	private static long idCount=0;
-	
-	
-	public void setEmployeeList(List<Employee> employeeList ) {
-		this.employeeList= employeeList;
+	private static long idCount = 0;
+
+	public void setEmployeeList(List<Employee> employeeList) {
+		this.employeeList = employeeList;
 	}
-	
-	public List<Employee> getEmployeeList(){
+
+	public List<Employee> getEmployeeList() {
 		return employeeList;
 	}
-	
+
 	@Autowired
 	private EmployeeRepository empRepository;
-	
+
 	// Save new employee
 	public long saveNewEmployee(Employee emp) {
-		
+
 		emp.setId(idCount++);
 		employeeList.add(emp);
 		return emp.getId();
-	} 
-	
+	}
+
 	// Get one employee by id
 	public Employee getEmployeeById(long id) {
-		Employee emp = employeeList.stream()
-				.filter(x -> id==x.getId())
-				.findAny()
-				.orElse(null);
+		Employee emp = employeeList.stream().filter(x -> id == x.getId()).findAny().orElse(null);
 		return emp;
 	}
-	
+
 	// Delete One employee
-		public Employee deleteEmployeeById(long id) {
-			Iterator empIterator = employeeList.iterator();
-			while(empIterator.hasNext()) {
-				Employee empAux = (Employee)empIterator.next();
-				if( empAux.getId() == id) {
-					employeeList.remove(empAux);
-					return empAux;
-				}
+	public Employee deleteEmployeeById(long id) {
+		Iterator empIterator = employeeList.iterator();
+		while (empIterator.hasNext()) {
+			Employee empAux = (Employee) empIterator.next();
+			if (empAux.getId() == id) {
+				employeeList.remove(empAux);
+				return empAux;
 			}
-			return null;
 		}
-	
+		return null;
+	}
+
 	// update one employee
-		public boolean updateEmployeeById(long id,String property,String value) throws ParseException {
-			switch(property) {
-			case "firstName":
-				for(Employee emp:employeeList) {
-					if(emp.getId()==id) 
-						emp.setFirstName(value);
-				}
-				break;
-			case "middleInitial":
-				for(Employee emp:employeeList) {
-					if(emp.getId()==id) 
-						emp.setMiddleInitial(value);
-				}
-				break;
-			case "lastName":
-				for(Employee emp:employeeList) {
-					if(emp.getId()==id) 
-						emp.setLastName(value);
-				}
-				break;
-			case "dateOfBirth":
-				for(Employee emp:employeeList) {
-					if(emp.getId()==id) 
-						emp.setDateOfBirth(new SimpleDateFormat("dd/MM/yyyy").parse(value));
-				}
-				break;
-			case "dateOfEmployment":
-				for(Employee emp:employeeList) {
-					if(emp.getId()==id) 
-						emp.setDateOfEmployment(new SimpleDateFormat("dd/MM/yyyy").parse(value));
-				}
-				break;
-			case "status":
-				for(Employee emp:employeeList) {
-					if(emp.getId()==id) 
-						emp.setStatus(value);
-				}
-				break;
+	public boolean updateEmployeeById(long id, String property, String value) throws ParseException {
+		switch (property) {
+		case "firstName":
+			for (Employee emp : employeeList) {
+				if (emp.getId() == id)
+					emp.setFirstName(value);
+			}
+			break;
+		case "middleInitial":
+			for (Employee emp : employeeList) {
+				if (emp.getId() == id)
+					emp.setMiddleInitial(value);
+			}
+			break;
+		case "lastName":
+			for (Employee emp : employeeList) {
+				if (emp.getId() == id)
+					emp.setLastName(value);
+			}
+			break;
+		case "dateOfBirth":
+			for (Employee emp : employeeList) {
+				if (emp.getId() == id)
+					emp.setDateOfBirth(new SimpleDateFormat("dd/MM/yyyy").parse(value));
+			}
+			break;
+		case "dateOfEmployment":
+			for (Employee emp : employeeList) {
+				if (emp.getId() == id)
+					emp.setDateOfEmployment(new SimpleDateFormat("dd/MM/yyyy").parse(value));
+			}
+			break;
+		case "status":
+			for (Employee emp : employeeList) {
+				if (emp.getId() == id)
+					emp.setStatus(value);
+			}
+			break;
 		}
-			return false;
-		}
-	
-	//what happen if the list is size of 0
+		return false;
+	}
+
+	// what happen if the list is size of 0
 	// Get all employees
-	public List<Employee> getAllEmployee(){
+	public List<Employee> getAllEmployee() {
 		return employeeList;
 	}
-	
-	
-	//get emp id from a combination of the full name and birthday date
+
+	// get emp id from a combination of the full name and birthday date
 	public long getEmployeeId(Employee employee) {
-		Predicate<Employee>firstNameFilter = emp -> emp.getFirstName().equals(employee.getFirstName());
-		Predicate<Employee>middleInitialNameFilter = emp -> emp.getMiddleInitial().equals(employee.getMiddleInitial());
-		Predicate<Employee>lastNameFilter = emp -> emp.getLastName().equals(employee.getLastName());
-		
-		Employee emp = employeeList.stream()
-				.filter(firstNameFilter.and(middleInitialNameFilter.and(lastNameFilter)))
-				.findAny()
-				.orElse(null);
-		if(emp==null) {
+		Predicate<Employee> firstNameFilter = emp -> emp.getFirstName().equals(employee.getFirstName());
+		Predicate<Employee> middleInitialNameFilter = emp -> emp.getMiddleInitial().equals(employee.getMiddleInitial());
+		Predicate<Employee> lastNameFilter = emp -> emp.getLastName().equals(employee.getLastName());
+
+		Employee emp = employeeList.stream().filter(firstNameFilter.and(middleInitialNameFilter.and(lastNameFilter)))
+				.findAny().orElse(null);
+		if (emp == null) {
 			return -1;
 		} else {
 			return emp.getId();
