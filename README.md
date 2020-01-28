@@ -1,10 +1,14 @@
 # employee-rest-api
 
 In order to run the program, you can either, run the jar file that is in the root of the project like this:
+
 java -jar employee-rest-api-0.0.1-SNAPSHOT.jar
-or also you can execute the maven command: mvn clean install 
-this will generate a docker image in you machine, so then you can run a container like this:
+
+Or also you can execute the maven command: mvn clean install.
+
+This will generate a docker image in you machine, so then you can run a container like this:
 docker run -p 8080:8080 employee-rest-api
+
 Also if you want you can open the project in one IDE and run it from there.
 
 in order to test the api, you have to do requests through localhost in port 8080 adding the specific url.
